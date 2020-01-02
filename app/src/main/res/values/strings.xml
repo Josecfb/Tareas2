@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Tareas</string>
+    <string name="mis_tareas">Mis tareas</string>
+    <string name="fondo_marino">fondo_marino</string>
+    <string name="josecarlos">José Carlos</string>
+    <string name="password">Contraseña</string>
+    <string name="user">Usuario</string>
+    <string name="crear_cuenta">Crear Cuenta</string>
+    <string name="login">LOGIN</string>
+    <string name="no_valido">Usuario o contraseña no válidos</string>
+    <string name="tarea">Tarea</string>
+    <string name="editar">Editar</string>
+</resources>

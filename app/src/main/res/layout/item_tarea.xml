@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/nombre_tarea"
+        android:layout_width="300dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        style="@style/h3"
+        android:text="@string/tarea"/>
+    <ImageView
+        android:id="@+id/boton_borrar"
+        android:layout_width="40dp"
+        app:showAsAction="always"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:src="@drawable/ic_check"
+        android:onClick="borrarTarea"/>
+
+    <ImageView
+        android:id="@+id/boton_editar"
+        android:layout_width="40dp"
+        app:showAsAction="always"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:onClick="editarTarea"
+        android:src="@drawable/ic_lapiz"
+        android:text="@string/editar" />
+
+
+
+
+</LinearLayout>
