@@ -39,6 +39,7 @@
     <style name="AlertDialogCustom">
         <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorForeground">@android:color/white</item>
     </style>
 
 </resources>

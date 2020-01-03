@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.time.LocalDateTime;
 
 import com.example.tareas2.db.ControladorDB;
 
@@ -38,24 +41,79 @@ public class Principal extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        final EditText cajaTareaNueva=new EditText(this);
-        AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom))
-                .setTitle("Nueva Tarea")
-                .setMessage("¿Que desea hacer a continuación?")
-                .setView(cajaTareaNueva)
-                .setPositiveButton("Añadir", new DialogInterface.OnClickListener() {
+        switch (item.getItemId()){
+            case R.id.new_task: {
+                nuevaTarea();
+                return true;
+            }
+            case R.id.cerrar_sesion:{
+
+                cerrarSesion();
+                return true;
+            }
+        }
+        nuevaTarea();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void cerrarSesion(){
+        AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.AlertDialogCustom))
+                .setTitle("Cerrar sesión")
+                .setMessage("¿Esta seguro que desea cerrar sesión")
+                .setPositiveButton("Cerrar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        controladorDB.addTask(cajaTareaNueva.getText().toString(),getIdUser());
-                        actualizarUI();
+                        irALogin();
                     }
                 })
                 .setNegativeButton("Cancelar",null)
                 .create();
         dialog.show();
-        return super.onOptionsItemSelected(item);
     }
-
+    private void irALogin(){
+        Toast toast=Toast.makeText(this,"Cerrando Sesión",Toast.LENGTH_LONG);
+        toast.show();
+        Intent intent=new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.desaparece, R.anim.aparece);
+        finish();
+    }
+    private void nuevaTarea() {
+        LocalDateTime fecha=null;
+        int dia=0,mes=0,year=0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            fecha = LocalDateTime.now();
+            dia=fecha.getDayOfMonth();
+            mes=fecha.getMonthValue();
+            year=fecha.getYear();
+        }
+        String tFecha=dia+"/"+mes+"/"+year;
+        System.out.println(tFecha);
+        final EditText cajaTareaNueva=new EditText(this);
+        cajaTareaNueva.setTextColor(Color.WHITE);
+        AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom))
+                .setTitle("Nueva Tarea")
+                .setMessage("Escribe tu nueva tarea")
+                .setView(cajaTareaNueva)
+                .setPositiveButton("Añadir", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(cajaTareaNueva.getText().toString().equals("")){
+                            tareaEnBlanco();
+                        }else {
+                            controladorDB.addTask(cajaTareaNueva.getText().toString(), getIdUser());
+                            actualizarUI();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancelar",null)
+                .create();
+        dialog.show();
+    }
+    private void tareaEnBlanco() {
+        Toast toast=Toast.makeText(this,"La tarea no puede estar en blanco",Toast.LENGTH_SHORT);
+        toast.show();
+    }
     private int getIdUser() {
         return getIntent().getIntExtra("idUser",0);
     }
@@ -80,7 +138,7 @@ public class Principal extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String nombreTarea=tareaTextView.getText().toString();
-                        controladorDB.borrarTarea(nombreTarea);
+                        controladorDB.realizarTarea(nombreTarea);
                         actualizarUI();
                         tareaTerminada();
                     }

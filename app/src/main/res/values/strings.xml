@@ -10,4 +10,7 @@
     <string name="no_valido">Usuario o contraseña no válidos</string>
     <string name="tarea">Tarea</string>
     <string name="editar">Editar</string>
+    <string name="anadir_tarea">Añadir Tarea</string>
+    <string name="completadas">Completadas</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
 </resources>

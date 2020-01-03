@@ -6,11 +6,16 @@
     <item
         android:id="@+id/new_task"
         android:icon="@drawable/ic_mas"
-        android:title="ItemMas"
+        android:title="@string/anadir_tarea"
         app:showAsAction="always"/>
     <item
         android:id="@+id/completadas"
         android:icon="@drawable/ic_completadas"
-        android:title="Completadas"
+        android:title="@string/completadas"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/cerrar_sesion"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/cerrar_sesion"
+        app:showAsAction="ifRoom"/>
 </menu>

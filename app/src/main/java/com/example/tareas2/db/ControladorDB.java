@@ -5,10 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import androidx.annotation.Nullable;
-
-import com.example.tareas2.Principal;
 
 public class ControladorDB extends SQLiteOpenHelper {
 
@@ -20,7 +17,7 @@ public class ControladorDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE USUARIOS (ID INTEGER PRIMARY KEY AUTOINCREMENT, USUARIO TEXT NOT NULL, PASSWORD TEXT NOT NULL);");
 
-        db.execSQL("CREATE TABLE TAREAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NOMBRE TEXT NOT NULL,FECHA_INICIO DATE, USER_ID INTEGER NOT NULL, FOREIGN KEY (USER_ID) REFERENCES USUARIOS(ID));");
+        db.execSQL("CREATE TABLE TAREAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NOMBRE TEXT NOT NULL,REALIZADA INTEGER, USER_ID INTEGER NOT NULL, FOREIGN KEY (USER_ID) REFERENCES USUARIOS(ID));");
     }
 
     @Override
@@ -32,6 +29,7 @@ public class ControladorDB extends SQLiteOpenHelper {
         ContentValues registro=new ContentValues();
         registro.put("NOMBRE",task);
         registro.put("USER_ID",user_id);
+        registro.put("REALIZADA",0);
         SQLiteDatabase db=this.getWritableDatabase();
         db.insert("TAREAS",null,registro);
         //db.execSQL("INSERT INTO TAREAS VALUES (null, '+tarea+');'");
@@ -39,7 +37,7 @@ public class ControladorDB extends SQLiteOpenHelper {
     }
     public String[] obtenerTareas(int userID){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("select NOMBRE from TAREAS where USER_ID=?",new String[]{String.valueOf(userID)} );
+        Cursor cursor=db.rawQuery("select NOMBRE from TAREAS where USER_ID=? AND REALIZADA=0",new String[]{String.valueOf(userID)} );
         if (cursor.getCount()==0){
             db.close();
             return null;
@@ -56,13 +54,12 @@ public class ControladorDB extends SQLiteOpenHelper {
     }
     public int nRegistros(int userId){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * from TAREAS WHERE USER_ID=?",new String[] {String.valueOf(userId)});
+        Cursor cursor=db.rawQuery("SELECT * from TAREAS WHERE USER_ID=? AND REALIZADA=0",new String[] {String.valueOf(userId)});
         return cursor.getCount();
     }
-    public void borrarTarea(String nombre){
+    public void realizarTarea(String nombre){
         SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("DELETE FROM TAREAS WHERE NOMBRE=?;",new String[] {nombre});
-        //db.delete("TAREAS","NOMBRE=?",new String[] {nombre});
+        db.execSQL("UPDATE TAREAS SET REALIZADA=1 WHERE NOMBRE=?;",new String[] {nombre});
         db.close();
     }
     public void editarTarea(String tareaNueva,String tareaAntigua){

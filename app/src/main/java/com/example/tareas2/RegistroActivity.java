@@ -46,6 +46,7 @@ public class RegistroActivity extends AppCompatActivity {
                         Intent intent = new Intent(this, Principal.class);
                         intent.putExtra("idUser", idUser);
                         startActivity(intent);
+                        finish();
                     }
                 }
             }
