@@ -63,7 +63,7 @@
                     android:inputType="date"
                     android:fontFamily="@font/indieflowerregular"
                     android:focusable="false"
-                    />
+                    android:onClick="ponFecha"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                     android:inputType="time"
                     android:fontFamily="@font/indieflowerregular"
                     android:focusable="false"
-                    />
+                    android:onClick="ponHora"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <Button
@@ -93,7 +93,6 @@
             android:layout_margin="10dp"
             android:background="@drawable/botonfondo"
             android:text="@string/cancelar"
-            />
-
+            android:onClick="cerrarEditarTarea"/>
     </LinearLayout>
 </FrameLayout>

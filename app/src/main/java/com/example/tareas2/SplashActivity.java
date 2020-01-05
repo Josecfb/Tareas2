@@ -1,7 +1,6 @@
 package com.example.tareas2;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -27,13 +26,11 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     @Override
     public void onAnimationStart(Animation animation) {
-
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
         Intent intent=new Intent(this,LoginActivity.class);
-
         startActivity(intent);
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);
         finish();
@@ -41,6 +38,5 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     @Override
     public void onAnimationRepeat(Animation animation) {
-
     }
 }

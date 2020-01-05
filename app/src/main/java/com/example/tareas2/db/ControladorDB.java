@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.view.View;
-
 import androidx.annotation.Nullable;
 
 public class ControladorDB extends SQLiteOpenHelper {
@@ -29,6 +27,8 @@ public class ControladorDB extends SQLiteOpenHelper {
                 "USER_ID INTEGER NOT NULL, " +
                 "FECHA TEXT, " +
                 "HORA TEXT, " +
+                "FECHA_FIN TEXT, "+
+                "HORA_FIN TEXT, "+
                 "FOREIGN KEY (USER_ID) REFERENCES USUARIOS(ID));");
     }
 
@@ -51,7 +51,11 @@ public class ControladorDB extends SQLiteOpenHelper {
     }
     public String[] obtenerTareas(int userID){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("select NOMBRE || '\n' || FECHA || ' a las ' || HORA from TAREAS where USER_ID=? AND REALIZADA=0",new String[]{String.valueOf(userID)} );
+        Cursor cursor=db.rawQuery("select NOMBRE || '\n' || FECHA || ' a las ' || HORA " +
+                        "from TAREAS " +
+                        "where USER_ID=? AND REALIZADA=0",
+                new String[]{String.valueOf(userID)} );
+
         if (cursor.getCount()==0){
             db.close();
             return null;
@@ -69,29 +73,28 @@ public class ControladorDB extends SQLiteOpenHelper {
     public String[] devolverTarea(int idTarea){
         SQLiteDatabase db=this.getReadableDatabase();
         String[] res=new String[4];
-        Cursor cursor=db.rawQuery("SELECT NOMBRE, FECHA, HORA, USER_ID FROM TAREAS WHERE ID=?",new String[]{String.valueOf(idTarea)});
+        Cursor cursor=db.rawQuery("SELECT NOMBRE, FECHA, HORA, USER_ID FROM TAREAS WHERE ID=?",
+                new String[]{String.valueOf(idTarea)});
         cursor.moveToFirst();
         for (int i=0;i<res.length;i++)
             res[i]=cursor.getString(i);
+        cursor.close();
         return res;
     }
     public void guardarTarea(int idTarea,String nombre,String fecha,String hora){
         SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("UPDATE TAREAS SET NOMBRE=?,FECHA=?,HORA=? WHERE ID=?",new String[] {nombre,fecha,hora,String.valueOf(idTarea)});
+        db.execSQL("UPDATE TAREAS SET NOMBRE=?,FECHA=?,HORA=? WHERE ID=?",
+                new String[] {nombre,fecha,hora,String.valueOf(idTarea)});
     }
     public int nRegistros(int userId){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * from TAREAS WHERE USER_ID=? AND REALIZADA=0",new String[] {String.valueOf(userId)});
+        Cursor cursor=db.rawQuery("SELECT * from TAREAS WHERE USER_ID=? AND REALIZADA=0",
+                new String[] {String.valueOf(userId)});
         return cursor.getCount();
     }
-    public void realizarTarea(String nombre){
+    public void realizarTarea(int idTarea){
         SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("UPDATE TAREAS SET REALIZADA=1 WHERE NOMBRE=?;",new String[] {nombre});
-        db.close();
-    }
-    public void editarTarea(String tareaNueva,String tareaAntigua){
-        SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("UPDATE TAREAS SET NOMBRE=? where NOMBRE=?;",new String[] {tareaNueva,tareaAntigua});
+        db.execSQL("UPDATE TAREAS SET REALIZADA=1 WHERE ID=?;",new String[] {String.valueOf(idTarea)});
         db.close();
     }
 
@@ -106,20 +109,23 @@ public class ControladorDB extends SQLiteOpenHelper {
     }
     public int idTarea(String nombreTarea,String fecha,String hora){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT ID FROM TAREAS WHERE NOMBRE=? AND FECHA=? AND HORA=?;",new String[] {nombreTarea,fecha,hora});
+        Cursor cursor=db.rawQuery("SELECT ID FROM TAREAS WHERE NOMBRE=? AND FECHA=? AND HORA=?;",
+                new String[] {nombreTarea,fecha,hora});
         cursor.moveToFirst();
         return cursor.getInt(0);
     }
     public int idUser(String user){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT ID FROM USUARIOS WHERE USUARIO=?;",new String[] {user});
+        Cursor cursor=db.rawQuery("SELECT ID FROM USUARIOS WHERE USUARIO=?;",
+                new String[] {user});
         cursor.moveToFirst();
         System.out.println(cursor.getInt(0));
         return cursor.getInt(0);
     }
     public int existe(String user,String password){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * FROM USUARIOS WHERE USUARIO=? and PASSWORD=?;",new String[] {user,password});
+        Cursor cursor=db.rawQuery("SELECT * FROM USUARIOS WHERE USUARIO=? and PASSWORD=?;",
+                new String[] {user,password});
         return cursor.getCount();
     }
 }

@@ -11,16 +11,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.tareas2.db.ControladorDB;
 
 public class Principal extends AppCompatActivity {
     private ControladorDB controladorDB;
     private ListView listViewTareas;
+    private Util util=new Util(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,6 @@ public class Principal extends AppCompatActivity {
                 return true;
             }
             case R.id.cerrar_sesion:{
-
                 cerrarSesion();
                 return true;
             }
@@ -69,8 +68,7 @@ public class Principal extends AppCompatActivity {
         dialog.show();
     }
     private void irALogin(){
-        Toast toast=Toast.makeText(this,"Cerrando Sesión",Toast.LENGTH_LONG);
-        toast.show();
+        util.tostada("Cerrando Sesión");
         Intent intent=new Intent(this,LoginActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);
@@ -99,20 +97,16 @@ public class Principal extends AppCompatActivity {
         }
     }
 
-    public void borrarTarea(View view){
-        View parent=(View) view.getParent();
-        final TextView tareaTextView=parent.findViewById(R.id.nombre_tarea);
-
+    public void terminarTarea(final View view){
         AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MiEstiloDialogo))
                 .setTitle("TerminarTarea")
                 .setMessage("¿Estás seguro que quieres terminar la tarea?")
                 .setPositiveButton("Terminar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String nombreTarea=tareaTextView.getText().toString();
-                        controladorDB.realizarTarea(nombreTarea);
+                        controladorDB.realizarTarea(sacaIdTatea(view));
                         actualizarUI();
-                        tareaTerminada();
+                        util.tostada("Tarea terminada");
                     }
                 })
                 .setNegativeButton("Cancelar",null)
@@ -120,22 +114,22 @@ public class Principal extends AppCompatActivity {
         dialog.show();
         actualizarUI();
     }
-    private void tareaTerminada() {
-        Toast toast=Toast.makeText(this,"Tarea terminada",Toast.LENGTH_SHORT);
-        toast.show();
-    }
+
     public void editarTarea(View view){
+        Intent intent=new Intent(this,EditarTareaActivity.class);
+        intent.putExtra("idTarea",sacaIdTatea(view));
+        startActivity(intent);
+        overridePendingTransition(R.anim.desaparece, R.anim.aparece);
+        finish();
+    }
+
+    private int sacaIdTatea(View view) {
         View parent=(View) view.getParent();
         final TextView tareaTextView=parent.findViewById(R.id.nombre_tarea);
         String nombreTarea=tareaTextView.getText().toString().split("\n")[0];
         String fecha=tareaTextView.getText().toString().split("\n")[1].split(" a las ")[0];
         String hora=tareaTextView.getText().toString().split("\n")[1].split(" a las ")[1];
-        int idTatea=controladorDB.idTarea(nombreTarea,fecha,hora);
-        Intent intent=new Intent(this,EditarTareaActivity.class);
-        intent.putExtra("idTarea",idTatea);
-        startActivity(intent);
-        overridePendingTransition(R.anim.desaparece, R.anim.aparece);
-        finish();
+        return controladorDB.idTarea(nombreTarea,fecha,hora);
     }
 }
 
