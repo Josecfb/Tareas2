@@ -12,7 +12,8 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         style="@style/h3"
-        android:text="@string/tarea"/>
+        android:text="@string/tarea"
+        android:onClick="editarTarea"/>
     <ImageView
         android:id="@+id/boton_borrar"
         android:layout_width="40dp"

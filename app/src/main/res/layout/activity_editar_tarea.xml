@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NuevaTareaActivity">
+    tools:context=".EditarTareaActivity">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/h1"
-            android:text="@string/nueva_tarea"/>
+            android:text="Editar Tarea"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +49,6 @@
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,6 @@
                     android:inputType="date"
                     android:fontFamily="@font/indieflowerregular"
                     android:focusable="false"
-                    android:onClick="cuadroFecha"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -80,7 +79,6 @@
                     android:inputType="time"
                     android:fontFamily="@font/indieflowerregular"
                     android:focusable="false"
-                    android:onClick="cuadroHora"
                     />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -88,8 +86,8 @@
             style="@style/b1"
             android:layout_margin="10dp"
             android:background="@drawable/botonfondo"
-            android:text="@string/anadir_tarea"
-            android:onClick="nuevaTarea"/>
+            android:text="Guardar cambios"
+            android:onClick="guardarLaTarea"/>
         <Button
             style="@style/b1"
             android:layout_margin="10dp"

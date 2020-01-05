@@ -13,4 +13,8 @@
     <string name="anadir_tarea">Añadir Tarea</string>
     <string name="completadas">Completadas</string>
     <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="fecha_de_inicio">Fecha de inicio</string>
+    <string name="nombre_de_la_tarea">Nombre de la tarea</string>
+    <string name="nueva_tarea">Nueva Tarea</string>
 </resources>

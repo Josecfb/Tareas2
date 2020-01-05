@@ -9,9 +9,10 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NuevaTareaActivity"></activity>
+        <activity android:name=".EditarTareaActivity"></activity>
+        <activity android:name=".NuevaTareaActivity" />
         <activity android:name=".RegistroActivity" />
-        <activity android:name=".Principal"></activity>
+        <activity android:name=".Principal" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>

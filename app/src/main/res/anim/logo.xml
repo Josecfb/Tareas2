@@ -7,11 +7,11 @@
         android:fromYScale="0"
         android:toYScale="1"
         android:toXScale="1"
-        android:duration="5000"/>
+        android:duration="3000"/>
     <rotate
         android:pivotY="50%"
         android:pivotX="50%"
         android:fromDegrees="360"
         android:toDegrees="0"
-        android:duration="4000"/>
+        android:duration="3000"/>
 </set>
