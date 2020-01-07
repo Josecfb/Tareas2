@@ -13,21 +13,11 @@
         android:layout_height="wrap_content"
         style="@style/h3"
         android:text="@string/tarea"
-        android:onClick="editarTarea"/>
-    <ImageView
-        android:id="@+id/boton_terminar"
-        android:layout_width="40dp"
-        app:showAsAction="always"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="1"
-        android:src="@drawable/ic_check"
-        android:onClick="terminarTarea"/>
+        />
 
     <ImageView
         android:id="@+id/boton_borrar"
-        android:layout_width="40dp"
+        android:layout_width="20dp"
         app:showAsAction="always"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
@@ -36,7 +26,17 @@
         android:onClick="borrarTarea"
         android:src="@drawable/ic_borrar"
         android:text="Borrar Tarea" />
-
+    <ImageView
+        android:id="@+id/boton_deshacer"
+        android:layout_width="20dp"
+        app:showAsAction="always"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:onClick="borrarTarea"
+        android:src="@drawable/ic_deshacer"
+        android:text="Deshacer Tarea" />
 
 
 

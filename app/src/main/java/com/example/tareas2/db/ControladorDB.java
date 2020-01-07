@@ -49,13 +49,14 @@ public class ControladorDB extends SQLiteOpenHelper {
         //db.execSQL("INSERT INTO TAREAS VALUES (null, '+tarea+');'");
         db.close();
     }
-    public String[] obtenerTareas(int userID){
+    public String[] obtenerTareas(int userID, int terminada){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("select NOMBRE || '\n' || FECHA || ' a las ' || HORA " +
+        Cursor cursor=db.rawQuery("select CASE WHEN REALIZADA=1 THEN NOMBRE || '\n' || FECHA || ' a las ' || HORA || '\n' || FECHA_FIN || ' a las '|| HORA_FIN " +
+                        "ELSE NOMBRE || '\n' || FECHA || ' a las ' || HORA END "+
                         "from TAREAS " +
-                        "where USER_ID=? AND REALIZADA=0",
-                new String[]{String.valueOf(userID)} );
-
+                        "where USER_ID=? AND REALIZADA=?",
+                new String[]{String.valueOf(userID),String.valueOf(terminada)} );
+        System.out.println("TERMINADAS:   "+cursor.getCount());
         if (cursor.getCount()==0){
             db.close();
             return null;
@@ -85,16 +86,23 @@ public class ControladorDB extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getWritableDatabase();
         db.execSQL("UPDATE TAREAS SET NOMBRE=?,FECHA=?,HORA=? WHERE ID=?",
                 new String[] {nombre,fecha,hora,String.valueOf(idTarea)});
+        db.close();
     }
-    public int nRegistros(int userId){
+    public void borrarTarea(int idTarea){
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.execSQL("DELETE FROM TAREAS WHERE ID=?;",new String[] {String.valueOf(idTarea)});
+        db.close();
+    }
+    public int nRegistros(int userId, int realizada){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * from TAREAS WHERE USER_ID=? AND REALIZADA=0",
-                new String[] {String.valueOf(userId)});
+        Cursor cursor=db.rawQuery("SELECT * from TAREAS WHERE USER_ID=? AND REALIZADA=?",
+                new String[] {String.valueOf(userId),String.valueOf(realizada)});
         return cursor.getCount();
     }
-    public void realizarTarea(int idTarea){
+    public void realizarTarea(int realizada, int idTarea,String fecha,String hora){
         SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("UPDATE TAREAS SET REALIZADA=1 WHERE ID=?;",new String[] {String.valueOf(idTarea)});
+        db.execSQL("UPDATE TAREAS SET REALIZADA=?, FECHA_FIN=?, HORA_FIN=? WHERE ID=?;",
+                new String[] {String.valueOf(realizada),fecha,hora,String.valueOf(idTarea)});
         db.close();
     }
 

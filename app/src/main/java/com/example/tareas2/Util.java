@@ -6,18 +6,36 @@ import android.content.Context;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
+import com.example.tareas2.db.ControladorDB;
 import com.google.android.material.textfield.TextInputEditText;
+import java.util.Calendar;
 
 public class Util {
     private Context context;
+    private ControladorDB controladorDB;
 
     public Util(@Nullable Context context) {
         this.context=context;
+        controladorDB=new ControladorDB(context);
+    }
+
+    public String[] obtenerFecha(){
+        String[] res=new String[2];
+        Calendar fecha;
+        int dia,mes,year,hora,minuto;
+        fecha = Calendar.getInstance();
+        dia = fecha.get(Calendar.DAY_OF_MONTH);
+        mes = fecha.get(Calendar.MONTH)+1;
+        year = fecha.get(Calendar.YEAR);
+        hora=fecha.get(Calendar.HOUR_OF_DAY);
+        minuto=fecha.get(Calendar.MINUTE);
+        res[0]=(dia<10?"0"+dia:dia)+"/"+(mes<10?"0"+mes:mes)+"/"+year;
+        res[1]=(hora<10?"0"+hora:hora)+":"+(minuto<10?"0"+minuto:minuto);
+        return res;
     }
 
     public void cuadroFecha(View view){
@@ -52,4 +70,13 @@ public class Util {
         Toast toast=Toast.makeText(context,texto,Toast.LENGTH_LONG);
         toast.show();
     }
+    public int sacaIdTatea(View view) {
+        View parent=(View) view.getParent();
+        final TextView tareaTextView=parent.findViewById(R.id.nombre_tarea);
+        String nombreTarea=tareaTextView.getText().toString().split("\n")[0];
+        String fecha=tareaTextView.getText().toString().split("\n")[1].split(" a las ")[0];
+        String hora=tareaTextView.getText().toString().split("\n")[1].split(" a las ")[1];
+        return controladorDB.idTarea(nombreTarea,fecha,hora);
+    }
+
 }

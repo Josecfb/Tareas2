@@ -30,8 +30,8 @@ public class NuevaTareaActivity extends AppCompatActivity {
         String tHora=(hora<10?"0"+hora:hora)+":"+(minuto<10?"0"+minuto:minuto);
         TextView tVFecha=findViewById(R.id.fecha);
         TextView tVHora=findViewById(R.id.hora);
-        tVFecha.setText(tFecha);
-        tVHora.setText(tHora);
+        tVFecha.setText(util.obtenerFecha()[0]);
+        tVHora.setText(util.obtenerFecha()[1]);
     }
 
     public void nuevaTarea(View view){

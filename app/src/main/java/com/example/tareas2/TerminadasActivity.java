@@ -3,6 +3,7 @@ package com.example.tareas2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.example.tareas2.db.ControladorDB;
 
-public class Principal extends AppCompatActivity {
-    private ControladorDB controladorDB;
+public class TerminadasActivity extends AppCompatActivity {
+    private ControladorDB controladorDB=new ControladorDB(this);
     private ListView listViewTareas;
     private Util util=new Util(this);
 
@@ -26,36 +27,30 @@ public class Principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        controladorDB=new ControladorDB(this);
+        TextView titulo=findViewById(R.id.titulo_principal);
+        titulo.setText("Tareas Completadas");
         listViewTareas=findViewById(R.id.listatareas);
         actualizaListaTareas();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_principal,menu);
+        getMenuInflater().inflate(R.menu.menu_completadas,menu);
         return super.onCreateOptionsMenu(menu);
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.new_task: {
-                addnuevaTarea();
+            case R.id.iniciadas: {
+                irAIniciadas();
                 return true;
             }
             case R.id.cerrar_sesion:{
                 cerrarSesion();
                 return true;
             }
-            case R.id.completadas:{
-                irACompletadas();
-                return true;
-            }
         }
         return super.onOptionsItemSelected(item);
     }
-
     private void cerrarSesion(){
         AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MiEstiloDialogo))
                 .setTitle("Cerrar sesión")
@@ -70,13 +65,6 @@ public class Principal extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    private void irACompletadas(){
-        Intent intent=new Intent(this,TerminadasActivity.class);
-        intent.putExtra("idUser",getIdUser());
-        startActivity(intent);
-        overridePendingTransition(R.anim.desaparece, R.anim.aparece);
-        finish();
-    }
     public void irALogin(){
         util.tostada("Cerrando Sesión");
         Intent intent=new Intent(this,LoginActivity.class);
@@ -84,55 +72,13 @@ public class Principal extends AppCompatActivity {
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);
         finish();
     }
-    private void addnuevaTarea() {
-        Intent intent=new Intent(this,NuevaTareaActivity.class);
-        int idUser = getIdUser();
-        System.out.println(idUser);
-        intent.putExtra("idUser", idUser);
-        startActivity(intent);
-        overridePendingTransition(R.anim.desaparece, R.anim.aparece);
-
-    }
-
-    private int getIdUser() {
-        return getIntent().getIntExtra("idUser",0);
-    }
-
-    private void actualizaListaTareas(){
-        if(controladorDB.nRegistros(getIdUser(),0)==0)
-            listViewTareas.setAdapter(null);
-        else {
-            ArrayAdapter<String> adaptador = new ArrayAdapter<>(this, R.layout.item_tarea, R.id.nombre_tarea, controladorDB.obtenerTareas(getIdUser(),0));
-            listViewTareas.setAdapter(adaptador);
-        }
-    }
-
-    public void terminarTarea(final View view){
-        AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MiEstiloDialogo))
-                .setTitle("TerminarTarea")
-                .setMessage("¿Estás seguro que quieres terminar la tarea?")
-                .setPositiveButton("Terminar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        controladorDB.realizarTarea(1,util.sacaIdTatea(view),util.obtenerFecha()[0],util.obtenerFecha()[1]);
-                        actualizaListaTareas();
-                        util.tostada("Tarea terminada");
-                    }
-                })
-                .setNegativeButton("Cancelar",null)
-                .create();
-        dialog.show();
-        actualizaListaTareas();
-    }
-
-    public void editarTarea(View view){
-        Intent intent=new Intent(this,EditarTareaActivity.class);
-        intent.putExtra("idTarea",util.sacaIdTatea(view));
+    private void irAIniciadas(){
+        Intent intent=new Intent(this,Principal.class);
+        intent.putExtra("idUser",getIdUser());
         startActivity(intent);
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);
         finish();
     }
-
 
     public void borrarTarea(final View view){
         AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MiEstiloDialogo))
@@ -151,7 +97,17 @@ public class Principal extends AppCompatActivity {
         dialog.show();
         actualizaListaTareas();
     }
+
+
+    private void actualizaListaTareas(){
+        if(controladorDB.nRegistros(getIdUser(),1)==0)
+            listViewTareas.setAdapter(null);
+        else {
+            ArrayAdapter<String> adaptador = new ArrayAdapter<>(this, R.layout.item_tarea_terminada, R.id.nombre_tarea, controladorDB.obtenerTareas(getIdUser(),1));
+            listViewTareas.setAdapter(adaptador);
+        }
+    }
+    private int getIdUser() {
+        return getIntent().getIntExtra("idUser",0);
+    }
 }
-
-
-

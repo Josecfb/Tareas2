@@ -9,7 +9,8 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditarTareaActivity"></activity>
+        <activity android:name=".TerminadasActivity"></activity>
+        <activity android:name=".EditarTareaActivity" />
         <activity android:name=".NuevaTareaActivity" />
         <activity android:name=".RegistroActivity" />
         <activity android:name=".Principal" />
