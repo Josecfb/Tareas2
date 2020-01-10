@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
     <ImageView
+        android:id="@+id/fondomarino"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/fondo_marino"
@@ -51,9 +53,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/l_contrasena"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/white">
+                android:textColorHint="@android:color/white"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password"

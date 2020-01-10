@@ -11,7 +11,7 @@
     <item
         android:id="@+id/completadas"
         android:icon="@drawable/ic_completadas"
-        android:title="@string/completadas"
+        android:title="Ver completadas"
         app:showAsAction="always"/>
     <item
         android:id="@+id/cerrar_sesion"

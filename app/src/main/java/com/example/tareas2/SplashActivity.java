@@ -2,6 +2,7 @@ package com.example.tareas2;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,6 +23,8 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         logo.startAnimation(aLogo);
         titulo.startAnimation(entrada);
         aLogo.setAnimationListener(this);
+        MediaPlayer mp = MediaPlayer.create(this, R.raw.mar);
+        mp.start();
     }
 
     @Override

@@ -4,17 +4,27 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.tareas2.db.ControladorDB;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 
-public class Util {
+import static com.google.android.material.resources.MaterialResources.getDrawable;
+
+public class Util extends AppCompatActivity {
     private Context context;
     private ControladorDB controladorDB;
 
@@ -57,7 +67,7 @@ public class Util {
         final TextInputEditText tHora=view.findViewById(R.id.hora);
         int hora=Integer.parseInt(tHora.getText().toString().split(":")[0]);
         int minuto=Integer.parseInt(tHora.getText().toString().split(":")[1]);
-        TimePickerDialog horario=new TimePickerDialog(new ContextThemeWrapper(context,R.style.AppTheme), new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog horario=new TimePickerDialog(new ContextThemeWrapper(context,R.style.MiEstiloDialogoHora), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hora, int minuto) {
                 tHora.setText((hora<10?"0"+hora:hora)+":"+(minuto<10?"0"+minuto:minuto));
@@ -66,8 +76,14 @@ public class Util {
         horario.show();
     }
 
-    public void tostada(String texto){
-        Toast toast=Toast.makeText(context,texto,Toast.LENGTH_LONG);
+    public void tostada(String texto,View layout){
+        Toast toast= new Toast(context);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER,0,0);
+       // View layout = inflater.inflate(R.layout.tostada_layout,(ViewGroup) findViewById(R.id.layout_linear));
+        TextView mensaje=layout.findViewById(R.id.texto_tostada);
+        mensaje.setText(texto);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
         toast.show();
     }
     public int sacaIdTatea(View view) {
@@ -78,5 +94,6 @@ public class Util {
         String hora=tareaTextView.getText().toString().split("\n")[1].split(" a las ")[1];
         return controladorDB.idTarea(nombreTarea,fecha,hora);
     }
+
 
 }

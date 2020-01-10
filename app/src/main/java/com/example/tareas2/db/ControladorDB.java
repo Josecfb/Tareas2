@@ -82,9 +82,26 @@ public class ControladorDB extends SQLiteOpenHelper {
         cursor.close();
         return res;
     }
+    public String[] devolverTareaCompletada(int idTarea){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] res=new String[4];
+        Cursor cursor=db.rawQuery("SELECT NOMBRE, FECHA_FIN, HORA_FIN, USER_ID FROM TAREAS WHERE ID=?",
+                new String[]{String.valueOf(idTarea)});
+        cursor.moveToFirst();
+        for (int i=0;i<res.length;i++)
+            res[i]=cursor.getString(i);
+        cursor.close();
+        return res;
+    }
     public void guardarTarea(int idTarea,String nombre,String fecha,String hora){
         SQLiteDatabase db=this.getWritableDatabase();
         db.execSQL("UPDATE TAREAS SET NOMBRE=?,FECHA=?,HORA=? WHERE ID=?",
+                new String[] {nombre,fecha,hora,String.valueOf(idTarea)});
+        db.close();
+    }
+    public void guardarTareaTerminada(int idTarea,String nombre,String fecha,String hora){
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.execSQL("UPDATE TAREAS SET NOMBRE=?,FECHA_FIN=?,HORA_FIN=? WHERE ID=?",
                 new String[] {nombre,fecha,hora,String.valueOf(idTarea)});
         db.close();
     }
@@ -136,4 +153,5 @@ public class ControladorDB extends SQLiteOpenHelper {
                 new String[] {user,password});
         return cursor.getCount();
     }
+
 }

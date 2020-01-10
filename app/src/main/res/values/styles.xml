@@ -29,6 +29,11 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:textAlignment">textStart</item>
     </style>
+    <style name="tostada" parent="h3">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
     <style name="b1" parent="h1">
         <item name="android:textSize">30sp</item>
         <item name="android:paddingTop">5dp</item>
@@ -40,6 +45,11 @@
         <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:colorForeground">@android:color/white</item>
+    </style>
+    <style name="MiEstiloDialogoHora">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:colorForeground">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

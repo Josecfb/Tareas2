@@ -1,6 +1,7 @@
 package com.example.tareas2;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.example.tareas2.db.ControladorDB;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class EditarTareaActivity extends AppCompatActivity {
+public class EditarCompletadaActivity extends AppCompatActivity {
     private ControladorDB controladorDB;
     private Util util;
 
@@ -25,24 +26,31 @@ public class EditarTareaActivity extends AppCompatActivity {
         TextInputEditText nombreTarea=findViewById(R.id.task);
         TextInputEditText fecha=findViewById(R.id.fecha);
         TextInputEditText hora=findViewById(R.id.hora);
-        nombreTarea.setText(controladorDB.devolverTarea(getIdTarea())[0]);
-        fecha.setText(controladorDB.devolverTarea(getIdTarea())[1]);
-        hora.setText(controladorDB.devolverTarea(getIdTarea())[2]);
+        TextInputLayout lfecha=findViewById(R.id.l_fecha);
+        TextInputLayout lhora=findViewById(R.id.l_hora);
+        CharSequence fc="Fecha de fin";
+        lfecha.setHint(fc);
+        lhora.setHint("Hora de fin");
+        nombreTarea.setText(controladorDB.devolverTareaCompletada(getIdTarea())[0]);
+        fecha.setText(controladorDB.devolverTareaCompletada(getIdTarea())[1]);
+        hora.setText(controladorDB.devolverTareaCompletada(getIdTarea())[2]);
         ponPeces();
         Peces peces = new Peces(this);
     }
     private int getIdTarea(){
         return getIntent().getIntExtra("idTarea",0);
     }
+
     public void guardarLaTarea(View view){
         TextInputEditText nombreTarea=findViewById(R.id.task);
         TextInputEditText fecha=findViewById(R.id.fecha);
         TextInputEditText hora=findViewById(R.id.hora);
-        controladorDB.guardarTarea(getIdTarea(),nombreTarea.getText().toString(),fecha.getText().toString(),hora.getText().toString());
+        controladorDB.guardarTareaTerminada(getIdTarea(),nombreTarea.getText().toString(),fecha.getText().toString(),hora.getText().toString());
         cerrarEditarTarea(view);
     }
+
     public void cerrarEditarTarea(View view){
-        Intent intent=new Intent(this,Principal.class);
+        Intent intent=new Intent(this, TerminadasActivity.class);
         intent.putExtra("idUser", Integer.parseInt(controladorDB.devolverTarea(getIdTarea())[3]));
         startActivity(intent);
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);

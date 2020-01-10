@@ -11,8 +11,11 @@ import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +34,8 @@ public class TerminadasActivity extends AppCompatActivity {
         titulo.setText("Tareas Completadas");
         listViewTareas=findViewById(R.id.listatareas);
         actualizaListaTareas();
+        Peces peces = new Peces(this);
+        ponPeces();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,7 +71,8 @@ public class TerminadasActivity extends AppCompatActivity {
         dialog.show();
     }
     public void irALogin(){
-        util.tostada("Cerrando Sesión");
+        View v=getLayoutInflater().inflate(R.layout.tostada_layout,(ViewGroup) findViewById(R.id.layout_linear));
+        util.tostada("Cerrando Sesión",v);
         Intent intent=new Intent(this,LoginActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);
@@ -79,8 +85,27 @@ public class TerminadasActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.desaparece, R.anim.aparece);
         finish();
     }
+    public void deshacerTarea(final View view){
+        final View v=getLayoutInflater().inflate(R.layout.tostada_layout,(ViewGroup) findViewById(R.id.layout_linear));
+        AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MiEstiloDialogo))
+                .setTitle("Deshacer Tarea")
+                .setMessage("¿Estás seguro que quieres deshacer la tarea?")
+                .setPositiveButton("Deshacer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        controladorDB.realizarTarea(0,util.sacaIdTatea(view),"","");
+                        actualizaListaTareas();
+                        util.tostada("Tarea deshecha",v);
+                    }
+                })
+                .setNegativeButton("Cancelar",null)
+                .create();
+        dialog.show();
+        actualizaListaTareas();
+    }
 
     public void borrarTarea(final View view){
+        final View v=getLayoutInflater().inflate(R.layout.tostada_layout,(ViewGroup) findViewById(R.id.layout_linear));
         AlertDialog dialog=new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MiEstiloDialogo))
                 .setTitle("Eliminar Tarea")
                 .setMessage("¿Estás seguro que deseas eliminar la tarea?")
@@ -89,7 +114,7 @@ public class TerminadasActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         controladorDB.borrarTarea(util.sacaIdTatea(view));
                         actualizaListaTareas();
-                        util.tostada("Tarea eliminada con éxito");
+                        util.tostada("Tarea eliminada con éxito",v);
                     }
                 })
                 .setNegativeButton("CAncelar",null)
@@ -97,7 +122,13 @@ public class TerminadasActivity extends AppCompatActivity {
         dialog.show();
         actualizaListaTareas();
     }
-
+    public void editarTareaCompletada(View view){
+        Intent intent=new Intent(this,EditarCompletadaActivity.class);
+        intent.putExtra("idTarea",util.sacaIdTatea(view));
+        startActivity(intent);
+        overridePendingTransition(R.anim.desaparece, R.anim.aparece);
+        finish();
+    }
 
     private void actualizaListaTareas(){
         if(controladorDB.nRegistros(getIdUser(),1)==0)
@@ -109,5 +140,25 @@ public class TerminadasActivity extends AppCompatActivity {
     }
     private int getIdUser() {
         return getIntent().getIntExtra("idUser",0);
+    }
+    private void ponPeces() {
+        final FrameLayout fl=findViewById(R.id.fl);
+        ImageView[] pez=new ImageView[8];
+        for(int p=0;p<pez.length;p++) {
+            pez[p] = new ImageView(this);
+            if (p<pez.length/2)
+                pez[p].setImageDrawable(getDrawable(R.drawable.ic_peces));
+            else pez[p].setImageDrawable(getDrawable(R.drawable.ic_peces2));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            pez[p].setLayoutParams(params);
+            fl.addView(pez[p], 1);
+            if (p<pez.length/2)
+                pez[p].setX(-300);
+            else
+                pez[p].setX(1200);
+            pez[p].setY(300*p);
+            int i = 500;
+            pez[p].setId(i+p);
+        }
     }
 }

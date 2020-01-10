@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.tareas2.db.ControladorDB;
 import java.util.Calendar;
@@ -32,14 +36,17 @@ public class NuevaTareaActivity extends AppCompatActivity {
         TextView tVHora=findViewById(R.id.hora);
         tVFecha.setText(util.obtenerFecha()[0]);
         tVHora.setText(util.obtenerFecha()[1]);
+        ponPeces();
+        Peces peces = new Peces(this);
     }
 
     public void nuevaTarea(View view){
         TextView cajaTareaNueva=findViewById(R.id.task);
         TextView tVfecha=findViewById(R.id.fecha);
         TextView tVHora=findViewById(R.id.hora);
+        View v=getLayoutInflater().inflate(R.layout.tostada_layout,(ViewGroup) findViewById(R.id.layout_linear));
         if(cajaTareaNueva.getText().toString().equals("")){
-            util.tostada("La tarea no puede estar en blanco");
+            util.tostada("La tarea\nno puede estar en blanco",v);
         }else {
             System.out.println(getIntent().getIntExtra("idUser",0));
             controladorDB.addTask(cajaTareaNueva.getText().toString(),tVfecha.getText().toString(),tVHora.getText().toString(), getIntent().getIntExtra("idUser",0));
@@ -57,5 +64,25 @@ public class NuevaTareaActivity extends AppCompatActivity {
     }
     public void cuadroHora(View view) {
         util.cuadroHora(view);
+    }
+    private void ponPeces() {
+        final FrameLayout fl=findViewById(R.id.fl);
+        ImageView[] pez=new ImageView[8];
+        for(int p=0;p<pez.length;p++) {
+            pez[p] = new ImageView(this);
+            if (p<pez.length/2)
+                pez[p].setImageDrawable(getDrawable(R.drawable.ic_peces));
+            else pez[p].setImageDrawable(getDrawable(R.drawable.ic_peces2));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            pez[p].setLayoutParams(params);
+            fl.addView(pez[p], 1);
+            if (p<pez.length/2)
+                pez[p].setX(-300);
+            else
+                pez[p].setX(1200);
+            pez[p].setY(300*p);
+            int i = 500;
+            pez[p].setId(i+p);
+        }
     }
 }

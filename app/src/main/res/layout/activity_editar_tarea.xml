@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,6 +13,7 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/fondo_marino">
     </ImageView>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/h1"
-            android:text="Editar Tarea"/>
+            android:text="Editar tarea pendiente"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/l_fecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@android:color/white">
@@ -66,6 +68,7 @@
                     android:onClick="ponFecha"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/l_hora"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@android:color/white">
@@ -75,7 +78,7 @@
                     style="@style/h3"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:hint="Hora de inicio"
+                    android:hint="@string/hora_de_inicio"
                     android:inputType="time"
                     android:fontFamily="@font/indieflowerregular"
                     android:focusable="false"
