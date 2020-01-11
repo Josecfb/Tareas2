@@ -48,7 +48,7 @@
     </style>
     <style name="MiEstiloDialogoHora">
         <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:colorForeground">@color/colorPrimaryDark</item>
     </style>
 

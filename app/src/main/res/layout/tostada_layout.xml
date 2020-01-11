@@ -12,9 +12,10 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:background="@drawable/rectangulo"
-        android:radius="10dp"
+        android:gravity="center_vertical"
         >
         <ImageView
+            android:id="@+id/pez"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_pez"

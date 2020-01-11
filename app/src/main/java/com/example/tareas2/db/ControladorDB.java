@@ -18,7 +18,7 @@ public class ControladorDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE USUARIOS " +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "USUARIO TEXT NOT NULL, " +
-                "PASSWORD TEXT NOT NULL);");
+                "PASSWORD INTEGER NOT NULL);");
 
         db.execSQL("CREATE TABLE TAREAS (" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -123,7 +123,7 @@ public class ControladorDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addUser(String user, String password){
+    public void addUser(String user, int password){
         ContentValues registro=new ContentValues();
         registro.put("USUARIO",user);
         registro.put("PASSWORD",password);
@@ -147,10 +147,10 @@ public class ControladorDB extends SQLiteOpenHelper {
         System.out.println(cursor.getInt(0));
         return cursor.getInt(0);
     }
-    public int existe(String user,String password){
+    public int existe(String user,int password){
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=db.rawQuery("SELECT * FROM USUARIOS WHERE USUARIO=? and PASSWORD=?;",
-                new String[] {user,password});
+                new String[] {user,String.valueOf(password)});
         return cursor.getCount();
     }
 

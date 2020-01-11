@@ -1,13 +1,12 @@
 package com.example.tareas2;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,12 +16,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tareas2.db.ControladorDB;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 
-import static com.google.android.material.resources.MaterialResources.getDrawable;
 
 public class Util extends AppCompatActivity {
     private Context context;
@@ -79,7 +76,6 @@ public class Util extends AppCompatActivity {
     public void tostada(String texto,View layout){
         Toast toast= new Toast(context);
         toast.setGravity(Gravity.TOP|Gravity.CENTER,0,0);
-       // View layout = inflater.inflate(R.layout.tostada_layout,(ViewGroup) findViewById(R.id.layout_linear));
         TextView mensaje=layout.findViewById(R.id.texto_tostada);
         mensaje.setText(texto);
         toast.setDuration(Toast.LENGTH_SHORT);
@@ -94,6 +90,30 @@ public class Util extends AppCompatActivity {
         String hora=tareaTextView.getText().toString().split("\n")[1].split(" a las ")[1];
         return controladorDB.idTarea(nombreTarea,fecha,hora);
     }
-
-
+    public void ponPeces(Activity activity) {
+        FrameLayout fl = activity.findViewById(R.id.fl);
+        ImageView[] pez=new ImageView[8];
+        for(int p=0;p<pez.length;p++) {
+            pez[p] = new ImageView(activity);
+            if (p%2==0)
+                pez[p].setImageDrawable(context.getDrawable(R.drawable.ic_peces));
+            else pez[p].setImageDrawable(context.getDrawable(R.drawable.ic_peces2));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            pez[p].setLayoutParams(params);
+            fl.addView(pez[p], 1);
+            if (p%2==0) {
+                pez[p].setPivotX(100);
+                pez[p].setX(-350);
+            }
+            else {
+                pez[p].setPivotX(0);
+                pez[p].setX(1500);
+            }
+            pez[p].setY(300*p);
+            int i = 500;
+            pez[p].setId(i+p);
+        }
+    }
 }
+
+

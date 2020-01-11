@@ -3,7 +3,6 @@ package com.example.tareas2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.example.tareas2.db.ControladorDB;
 
 public class TerminadasActivity extends AppCompatActivity {
@@ -34,8 +29,10 @@ public class TerminadasActivity extends AppCompatActivity {
         titulo.setText("Tareas Completadas");
         listViewTareas=findViewById(R.id.listatareas);
         actualizaListaTareas();
-        Peces peces = new Peces(this);
-        ponPeces();
+        util.ponPeces(this);
+        new Peces(this);
+        util.ponPeces(this);
+        new Peces(this);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,24 +138,5 @@ public class TerminadasActivity extends AppCompatActivity {
     private int getIdUser() {
         return getIntent().getIntExtra("idUser",0);
     }
-    private void ponPeces() {
-        final FrameLayout fl=findViewById(R.id.fl);
-        ImageView[] pez=new ImageView[8];
-        for(int p=0;p<pez.length;p++) {
-            pez[p] = new ImageView(this);
-            if (p<pez.length/2)
-                pez[p].setImageDrawable(getDrawable(R.drawable.ic_peces));
-            else pez[p].setImageDrawable(getDrawable(R.drawable.ic_peces2));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            pez[p].setLayoutParams(params);
-            fl.addView(pez[p], 1);
-            if (p<pez.length/2)
-                pez[p].setX(-300);
-            else
-                pez[p].setX(1200);
-            pez[p].setY(300*p);
-            int i = 500;
-            pez[p].setId(i+p);
-        }
-    }
+
 }
